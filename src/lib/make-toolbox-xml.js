@@ -151,6 +151,23 @@ const xmlEscape = function (unsafe) {
     });
 };
 
+
+const custom = function (isInitialSetup, isStage, targetId) {
+    const stageSelected = ScratchBlocks.ScratchMsgs.translate(
+        'CUSTOM_STAGE_SELECTED',
+        'Stage selected: no motion blocks'
+    );
+    return `
+    <category name="custom" id="custom" colour="#4C97FF" secondaryColour="#3373CC">
+        ${isStage ? `
+        <label text="${stageSelected}"></label>
+        ` : `
+        <block type="custom_block">
+        </block>
+        `}
+    </category>`;
+};
+
 const looks = function (isInitialSetup, isStage, targetId, costumeName, backdropName) {
     const hello = ScratchBlocks.ScratchMsgs.translate('LOOKS_HELLO', 'Hello!');
     const hmm = ScratchBlocks.ScratchMsgs.translate('LOOKS_HMM', 'Hmm...');
@@ -762,7 +779,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId);
-
+    const customBlocksXML = moveCategory('custom') || custom(isInitialSetup, isStage, targetId);
     const everything = [
         xmlOpen,
         motionXML, gap,
@@ -773,7 +790,8 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         sensingXML, gap,
         operatorsXML, gap,
         variablesXML, gap,
-        myBlocksXML
+        myBlocksXML, gap,
+        customBlocksXML
     ];
 
     for (const extensionCategory of categoriesXML) {
