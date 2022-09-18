@@ -152,17 +152,23 @@ const xmlEscape = function (unsafe) {
 };
 
 
-const custom = function (isInitialSetup, isStage, targetId) {
+const trashcan= function (isInitialSetup, isStage, targetId) {
     const stageSelected = ScratchBlocks.ScratchMsgs.translate(
-        'CUSTOM_STAGE_SELECTED',
+        'TRASHCAN_STAGE_SELECTED',
         'Stage selected: no motion blocks'
     );
     return `
-    <category name="custom" id="custom" colour="#4C97FF" secondaryColour="#3373CC">
+    <category name="Trashcan" id="Trashcan" colour="#4C97FF" secondaryColour="#3373CC">
         ${isStage ? `
         <label text="${stageSelected}"></label>
         ` : `
-        <block type="custom_block">
+        <block type="trashcan_move_forward">
+        </block>
+        <block type="trashcan_move_backward">
+        </block>
+        <block type="trashcan_rotate_cw">
+        </block>
+        <block type="trashcan_rotate_ccw">
         </block>
         `}
     </category>`;
@@ -779,7 +785,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId);
-    const customBlocksXML = moveCategory('custom') || custom(isInitialSetup, isStage, targetId);
+    const trashcanBlocksXML = moveCategory('Trashcan') || trashcan(isInitialSetup, isStage, targetId);
     const everything = [
         xmlOpen,
         motionXML, gap,
@@ -791,7 +797,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         operatorsXML, gap,
         variablesXML, gap,
         myBlocksXML, gap,
-        customBlocksXML
+        trashcanBlocksXML
     ];
 
     for (const extensionCategory of categoriesXML) {
